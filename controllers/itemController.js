@@ -1,12 +1,34 @@
 const Item = require("../models/item");
+const async = require("async");
 
 exports.index = function (req, res) {
-  res.send("NOT IMPLEMENTED: Site Home Page");
+  async.parallel(
+    {
+      item_count(callback) {
+        Item.countDocuments({}, callback);
+      },
+    },
+    function (err, results) {
+      res.render("index", {
+        title: "Inventory Home",
+        error: err,
+        data: results,
+      });
+    }
+  );
 };
 
 //display list of all items
-exports.item_list = (req, res) => {
-  res.send("NOT IMPLEMENTED: Item list");
+exports.item_list = (req, res, next) => {
+  Item.find({}, "studio")
+    .sort({ name: 1 })
+    .populate("name")
+    .exec(function (err, item_list) {
+      if (err) {
+        return next(err);
+      }
+      res.render("item_list", { title: "Item List", item_list: item_list });
+    });
 };
 
 //detailed page of specific item
