@@ -1,4 +1,6 @@
 const Item = require("../models/item");
+const Category = require("../models/category");
+
 const async = require("async");
 
 exports.index = function (req, res) {
@@ -6,6 +8,9 @@ exports.index = function (req, res) {
     {
       item_count(callback) {
         Item.countDocuments({}, callback);
+      },
+      category_count(callback) {
+        Category.countDocuments({}, callback);
       },
     },
     function (err, results) {
