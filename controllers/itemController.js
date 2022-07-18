@@ -2,6 +2,7 @@ const Item = require("../models/item");
 const Category = require("../models/category");
 
 const async = require("async");
+const category = require("../models/category");
 
 exports.index = function (req, res) {
   async.parallel(
@@ -37,8 +38,23 @@ exports.item_list = (req, res, next) => {
 };
 
 //detailed page of specific item
-exports.item_detail = (req, res) => {
-  res.send("NOT IMPLEMENTED: Item detail");
+exports.item_detail = (req, res, next) => {
+  async.parallel(
+    {
+      item(callback) {
+        Item.findById(req.params.id)
+          .populate("name")
+          .populate("studio")
+          .exec(callback);
+      },
+    },
+    function (err, results) {
+      if (err) {
+        return next(err);
+      }
+      res.render("item_detail", { title: results.name });
+    }
+  );
 };
 
 //display item create form on GET

@@ -31,7 +31,7 @@ router.post("/item/:id/delete", item_Controller.item_update_post);
 router.get("/item/:id", item_Controller.item_detail);
 
 // get list of items
-router.get("/items", item_Controller.item_list);
+router.get("/item", item_Controller.item_list);
 
 //category Routes
 
@@ -57,6 +57,6 @@ router.post("/category/:id/delete", category_Controller.category_update_post);
 router.get("/category/:id", category_Controller.category_detail);
 
 // get list of categoriess
-router.get("/categories", category_Controller.category_list);
+router.get("/category", category_Controller.category_list);
 
 module.exports = router;
